@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import type { TimelineEra as TimelineEraType } from "@/data/timeline";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import FactCard from "./FactCard";
@@ -92,6 +93,29 @@ function EraContent({ era, align }: EraContentProps) {
           </p>
         ))}
       </div>
+
+      {era.image && (
+        <figure className="mt-6 overflow-hidden rounded-lg">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-navy/5">
+            <Image
+              src={era.image.src}
+              alt={era.image.alt}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              loading="lazy"
+            />
+          </div>
+          <figcaption className={`mt-2 text-xs leading-relaxed text-navy/50 ${align === "right" ? "text-right" : "text-left"}`}>
+            {era.image.caption}
+            {era.image.credit && (
+              <span className="block mt-0.5 text-navy/30">
+                Photo: {era.image.credit}
+              </span>
+            )}
+          </figcaption>
+        </figure>
+      )}
 
       {era.quote && <QuoteBlock quote={era.quote} />}
       {era.facts && <FactCard facts={era.facts} />}

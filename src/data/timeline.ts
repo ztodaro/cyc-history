@@ -8,6 +8,13 @@ export interface TimelineQuote {
   attribution: string;
 }
 
+export interface TimelineImage {
+  src: string;
+  alt: string;
+  caption: string;
+  credit?: string;
+}
+
 export interface TimelineEra {
   id: string;
   title: string;
@@ -16,6 +23,7 @@ export interface TimelineEra {
   paragraphs: string[];
   facts?: TimelineFact[];
   quote?: TimelineQuote;
+  image?: TimelineImage;
   gradientFrom: string;
   gradientTo: string;
 }
@@ -43,6 +51,12 @@ export const eras: TimelineEra[] = [
       { label: "Boathouse Built", value: "1887" },
       { label: "Hotel del Opens", value: "1888" },
     ],
+    image: {
+      src: "/images/boathouse-1888.jpg",
+      alt: "The Coronado Boathouse with bath house addition, 1888",
+      caption: "The Coronado Boathouse on Glorietta Bay, 1888. Designed by the Reid brothers as a 'practice run' for the Hotel del Coronado.",
+      credit: "Coronado Historical Association",
+    },
     gradientFrom: "#0A1628",
     gradientTo: "#4A90A4",
   },
@@ -65,6 +79,12 @@ export const eras: TimelineEra[] = [
     quote: {
       text: "The recreational experience of yachtsmen served as vital preliminary training for naval service.",
       attribution: "Josephus Daniels, Secretary of the Navy",
+    },
+    image: {
+      src: "/images/tent-city-aerial-1903.jpg",
+      alt: "Aerial view of Tent City with the Boathouse visible, 1903",
+      caption: "Tent City and the Boathouse on Glorietta Bay, 1903. The seasonal resort drew the sailors who would found the yacht club a decade later.",
+      credit: "Coronado Historical Association",
     },
     gradientFrom: "#162240",
     gradientTo: "#357080",
@@ -92,6 +112,12 @@ export const eras: TimelineEra[] = [
       text: "To attract yachtsmen to the harbor, encourage yachting in San Diego Bay, and work for the benefit of Coronado.",
       attribution: "Club purpose, 1935 CYC Directory",
     },
+    image: {
+      src: "/images/fdr-ferry-1935.jpg",
+      alt: "President Roosevelt on the Coronado Ferry with CYC boats in farewell, 1935",
+      caption: "President FDR crossing by ferry from Coronado, October 2, 1935. Boats from the Coronado Yacht Club say farewell.",
+      credit: "Coronado Historical Association",
+    },
     gradientFrom: "#0A1628",
     gradientTo: "#D4A843",
   },
@@ -114,6 +140,12 @@ export const eras: TimelineEra[] = [
       { label: "Wet Slips", value: "270+" },
       { label: "Dry Storage", value: "81 boats" },
     ],
+    image: {
+      src: "/images/hotel-del-1899.jpg",
+      alt: "Hotel del Coronado and surrounding waterfront, circa 1899",
+      caption: "The Hotel del Coronado and Coronado waterfront, c. 1899. The club's post-war home at 1631 Strand Way sits just south of here on Glorietta Bay.",
+      credit: "Library of Congress, Detroit Publishing Co. (Public Domain)",
+    },
     gradientFrom: "#162240",
     gradientTo: "#4A90A4",
   },
@@ -139,6 +171,12 @@ export const eras: TimelineEra[] = [
       text: "The kids who started on Sabots in Glorietta Bay ended up on Olympic podiums.",
       attribution: "CYC Junior Sailing Program",
     },
+    image: {
+      src: "/images/aerial-hotel-del.jpg",
+      alt: "Aerial view of Hotel del Coronado showing boathouse and bay",
+      caption: "Aerial view of the Hotel del Coronado, the historic Boathouse, and Glorietta Bay. The yacht club marina is visible to the south.",
+      credit: "Coronado Historical Association",
+    },
     gradientFrom: "#0A1628",
     gradientTo: "#6BB0C4",
   },
@@ -159,6 +197,12 @@ export const eras: TimelineEra[] = [
       { label: "Flag Membership Cap", value: "650" },
       { label: "Total Members", value: "~900" },
     ],
+    image: {
+      src: "/images/hotel-del-habs-1971.jpg",
+      alt: "Hotel del Coronado entrance elevation, 1971 HABS survey",
+      caption: "The Hotel del Coronado, 1971. The CYC and the Hotel del have been neighbors and partners for over a century.",
+      credit: "Library of Congress, HABS Survey by Marvin Rand (Public Domain)",
+    },
     gradientFrom: "#162240",
     gradientTo: "#D4A843",
   },
@@ -184,6 +228,12 @@ export const eras: TimelineEra[] = [
     quote: {
       text: "A lasting legacy for the future.",
       attribution: "Coronado Yacht Club Redevelopment Vision",
+    },
+    image: {
+      src: "/images/hotel-del-modern.jpg",
+      alt: "The Hotel del Coronado today",
+      caption: "The Hotel del Coronado today, the iconic neighbor of the Coronado Yacht Club since 1888.",
+      credit: "Wikimedia Commons (CC BY 3.0)",
     },
     gradientFrom: "#0A1628",
     gradientTo: "#4A90A4",
