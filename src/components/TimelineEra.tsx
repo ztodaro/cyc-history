@@ -12,7 +12,6 @@ interface TimelineEraProps {
 
 export default function TimelineEra({ era, index }: TimelineEraProps) {
   const isEven = index % 2 === 0;
-  const ref = useScrollAnimation<HTMLDivElement>();
 
   return (
     <div className="relative grid grid-cols-[24px_1fr] gap-4 md:grid-cols-[1fr_48px_1fr] md:gap-8">
@@ -21,7 +20,7 @@ export default function TimelineEra({ era, index }: TimelineEraProps) {
         className={`hidden md:block ${isEven ? "" : "order-3"}`}
       >
         {isEven && (
-          <EraContent ref={ref} era={era} align="right" />
+          <EraContent era={era} align="right" />
         )}
       </div>
 
@@ -38,7 +37,7 @@ export default function TimelineEra({ era, index }: TimelineEraProps) {
         className={`hidden md:block ${isEven ? "order-3" : ""}`}
       >
         {!isEven && (
-          <EraContent ref={ref} era={era} align="left" />
+          <EraContent era={era} align="left" />
         )}
         {isEven && <div />}
       </div>
@@ -53,61 +52,58 @@ export default function TimelineEra({ era, index }: TimelineEraProps) {
 
       {/* Mobile: content on right */}
       <div className="md:hidden">
-        <EraContent ref={ref} era={era} align="left" />
+        <EraContent era={era} align="left" />
       </div>
     </div>
   );
 }
-
-import { forwardRef } from "react";
 
 interface EraContentProps {
   era: TimelineEraType;
   align: "left" | "right";
 }
 
-const EraContent = forwardRef<HTMLDivElement, EraContentProps>(
-  function EraContent({ era, align }, ref) {
-    const animClass = align === "right" ? "reveal-left" : "reveal-right";
+function EraContent({ era, align }: EraContentProps) {
+  const ref = useScrollAnimation<HTMLElement>();
+  const animClass = align === "right" ? "reveal-left" : "reveal-right";
 
-    return (
-      <article
-        ref={ref}
-        className={`${animClass} pb-12 ${align === "right" ? "text-right" : "text-left"}`}
+  return (
+    <article
+      ref={ref}
+      className={`${animClass} pb-12 ${align === "right" ? "text-right" : "text-left"}`}
+    >
+      {/* Era gradient banner */}
+      <div
+        className={`mb-4 h-2 w-16 rounded-full md:w-24 ${align === "right" ? "ml-auto" : ""}`}
+        style={{
+          background: `linear-gradient(to right, ${era.gradientFrom}, ${era.gradientTo})`,
+        }}
+      />
+
+      <time className="text-sm font-semibold tracking-wider text-gold">
+        {era.years}
+      </time>
+
+      <h2 className="font-heading mt-1 text-2xl font-bold text-navy sm:text-3xl">
+        {era.title}
+      </h2>
+
+      <p className="mt-3 text-base font-medium leading-relaxed text-navy/70">
+        {era.summary}
+      </p>
+
+      <div
+        className={`mt-4 space-y-3 ${align === "right" ? "text-right" : "text-left"}`}
       >
-        {/* Era gradient banner */}
-        <div
-          className="mb-4 h-2 w-16 rounded-full md:w-24"
-          style={{
-            background: `linear-gradient(to right, ${era.gradientFrom}, ${era.gradientTo})`,
-          }}
-        />
+        {era.paragraphs.map((p, i) => (
+          <p key={i} className="text-sm leading-relaxed text-navy/80 sm:text-base">
+            {p}
+          </p>
+        ))}
+      </div>
 
-        <time className="text-sm font-semibold tracking-wider text-gold">
-          {era.years}
-        </time>
-
-        <h2 className="font-heading mt-1 text-2xl font-bold text-navy sm:text-3xl">
-          {era.title}
-        </h2>
-
-        <p className="mt-3 text-base font-medium leading-relaxed text-navy/70">
-          {era.summary}
-        </p>
-
-        <div
-          className={`mt-4 space-y-3 ${align === "right" ? "text-right" : "text-left"}`}
-        >
-          {era.paragraphs.map((p, i) => (
-            <p key={i} className="text-sm leading-relaxed text-navy/80 sm:text-base">
-              {p}
-            </p>
-          ))}
-        </div>
-
-        {era.quote && <QuoteBlock quote={era.quote} />}
-        {era.facts && <FactCard facts={era.facts} />}
-      </article>
-    );
-  },
-);
+      {era.quote && <QuoteBlock quote={era.quote} />}
+      {era.facts && <FactCard facts={era.facts} />}
+    </article>
+  );
+}

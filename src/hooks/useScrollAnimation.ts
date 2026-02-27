@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 export function useScrollAnimation<T extends HTMLElement>(
-  threshold = 0.15,
+  threshold = 0.05,
 ) {
   const ref = useRef<T>(null);
 
