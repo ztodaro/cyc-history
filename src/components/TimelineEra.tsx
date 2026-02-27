@@ -18,7 +18,7 @@ export default function TimelineEra({ era, index }: TimelineEraProps) {
     <div className="relative grid grid-cols-[24px_1fr] gap-4 md:grid-cols-[1fr_48px_1fr] md:gap-8">
       {/* Desktop: Left column */}
       <div className="hidden md:block">
-        {isEven ? <EraContent era={era} align="right" /> : null}
+        {isEven ? <EraContent era={era} /> : null}
       </div>
 
       {/* Desktop: Center line + marker */}
@@ -31,7 +31,7 @@ export default function TimelineEra({ era, index }: TimelineEraProps) {
 
       {/* Desktop: Right column */}
       <div className="hidden md:block">
-        {!isEven ? <EraContent era={era} align="left" /> : null}
+        {!isEven ? <EraContent era={era} /> : null}
       </div>
 
       {/* Mobile: line on left */}
@@ -44,7 +44,7 @@ export default function TimelineEra({ era, index }: TimelineEraProps) {
 
       {/* Mobile: content on right */}
       <div className="md:hidden">
-        <EraContent era={era} align="left" />
+        <EraContent era={era} />
       </div>
     </div>
   );
@@ -52,21 +52,19 @@ export default function TimelineEra({ era, index }: TimelineEraProps) {
 
 interface EraContentProps {
   era: TimelineEraType;
-  align: "left" | "right";
 }
 
-function EraContent({ era, align }: EraContentProps) {
+function EraContent({ era }: EraContentProps) {
   const ref = useScrollAnimation<HTMLElement>();
-  const animClass = align === "right" ? "reveal-left" : "reveal-right";
 
   return (
     <article
       ref={ref}
-      className={`${animClass} pb-12 ${align === "right" ? "text-right" : "text-left"}`}
+      className="reveal pb-12"
     >
       {/* Era gradient banner */}
       <div
-        className={`mb-4 h-2 w-16 rounded-full md:w-24 ${align === "right" ? "ml-auto" : ""}`}
+        className="mb-4 h-2 w-16 rounded-full md:w-24"
         style={{
           background: `linear-gradient(to right, ${era.gradientFrom}, ${era.gradientTo})`,
         }}
@@ -84,16 +82,6 @@ function EraContent({ era, align }: EraContentProps) {
         {era.summary}
       </p>
 
-      <div
-        className={`mt-4 space-y-3 ${align === "right" ? "text-right" : "text-left"}`}
-      >
-        {era.paragraphs.map((p, i) => (
-          <p key={i} className="text-sm leading-relaxed text-navy/80 sm:text-base">
-            {p}
-          </p>
-        ))}
-      </div>
-
       {era.image && (
         <figure className="mt-6 overflow-hidden rounded-lg">
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-navy/5">
@@ -106,7 +94,7 @@ function EraContent({ era, align }: EraContentProps) {
               loading="lazy"
             />
           </div>
-          <figcaption className={`mt-2 text-xs leading-relaxed text-navy/50 ${align === "right" ? "text-right" : "text-left"}`}>
+          <figcaption className="mt-2 text-xs leading-relaxed text-navy/50">
             {era.image.caption}
             {era.image.credit && (
               <span className="block mt-0.5 text-navy/30">
@@ -116,6 +104,14 @@ function EraContent({ era, align }: EraContentProps) {
           </figcaption>
         </figure>
       )}
+
+      <div className="mt-4 space-y-3">
+        {era.paragraphs.map((p, i) => (
+          <p key={i} className="text-sm leading-relaxed text-navy/80 sm:text-base">
+            {p}
+          </p>
+        ))}
+      </div>
 
       {era.quote && <QuoteBlock quote={era.quote} />}
       {era.facts && <FactCard facts={era.facts} />}
