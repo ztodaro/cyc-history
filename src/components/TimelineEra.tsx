@@ -15,16 +15,12 @@ export default function TimelineEra({ era, index }: TimelineEraProps) {
 
   return (
     <div className="relative grid grid-cols-[24px_1fr] gap-4 md:grid-cols-[1fr_48px_1fr] md:gap-8">
-      {/* Left content (desktop even) */}
-      <div
-        className={`hidden md:block ${isEven ? "" : "order-3"}`}
-      >
-        {isEven && (
-          <EraContent era={era} align="right" />
-        )}
+      {/* Desktop: Left column */}
+      <div className="hidden md:block">
+        {isEven ? <EraContent era={era} align="right" /> : null}
       </div>
 
-      {/* Center line + marker (desktop) */}
+      {/* Desktop: Center line + marker */}
       <div className="relative hidden items-start justify-center md:flex">
         <div className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-gold/30" />
         <div className="relative z-10 mt-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-gold bg-cream">
@@ -32,14 +28,9 @@ export default function TimelineEra({ era, index }: TimelineEraProps) {
         </div>
       </div>
 
-      {/* Right content (desktop odd) */}
-      <div
-        className={`hidden md:block ${isEven ? "order-3" : ""}`}
-      >
-        {!isEven && (
-          <EraContent era={era} align="left" />
-        )}
-        {isEven && <div />}
+      {/* Desktop: Right column */}
+      <div className="hidden md:block">
+        {!isEven ? <EraContent era={era} align="left" /> : null}
       </div>
 
       {/* Mobile: line on left */}
