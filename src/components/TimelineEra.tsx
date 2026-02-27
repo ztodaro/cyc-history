@@ -1,0 +1,113 @@
+"use client";
+
+import type { TimelineEra as TimelineEraType } from "@/data/timeline";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import FactCard from "./FactCard";
+import QuoteBlock from "./QuoteBlock";
+
+interface TimelineEraProps {
+  era: TimelineEraType;
+  index: number;
+}
+
+export default function TimelineEra({ era, index }: TimelineEraProps) {
+  const isEven = index % 2 === 0;
+  const ref = useScrollAnimation<HTMLDivElement>();
+
+  return (
+    <div className="relative grid grid-cols-[24px_1fr] gap-4 md:grid-cols-[1fr_48px_1fr] md:gap-8">
+      {/* Left content (desktop even) */}
+      <div
+        className={`hidden md:block ${isEven ? "" : "order-3"}`}
+      >
+        {isEven && (
+          <EraContent ref={ref} era={era} align="right" />
+        )}
+      </div>
+
+      {/* Center line + marker (desktop) */}
+      <div className="relative hidden items-start justify-center md:flex">
+        <div className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-gold/30" />
+        <div className="relative z-10 mt-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-gold bg-cream">
+          <div className="h-2.5 w-2.5 rounded-full bg-gold" />
+        </div>
+      </div>
+
+      {/* Right content (desktop odd) */}
+      <div
+        className={`hidden md:block ${isEven ? "order-3" : ""}`}
+      >
+        {!isEven && (
+          <EraContent ref={ref} era={era} align="left" />
+        )}
+        {isEven && <div />}
+      </div>
+
+      {/* Mobile: line on left */}
+      <div className="relative flex justify-center md:hidden">
+        <div className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-gold/30" />
+        <div className="relative z-10 mt-2 flex h-5 w-5 items-center justify-center rounded-full border-2 border-gold bg-cream">
+          <div className="h-2 w-2 rounded-full bg-gold" />
+        </div>
+      </div>
+
+      {/* Mobile: content on right */}
+      <div className="md:hidden">
+        <EraContent ref={ref} era={era} align="left" />
+      </div>
+    </div>
+  );
+}
+
+import { forwardRef } from "react";
+
+interface EraContentProps {
+  era: TimelineEraType;
+  align: "left" | "right";
+}
+
+const EraContent = forwardRef<HTMLDivElement, EraContentProps>(
+  function EraContent({ era, align }, ref) {
+    const animClass = align === "right" ? "reveal-left" : "reveal-right";
+
+    return (
+      <article
+        ref={ref}
+        className={`${animClass} pb-12 ${align === "right" ? "text-right" : "text-left"}`}
+      >
+        {/* Era gradient banner */}
+        <div
+          className="mb-4 h-2 w-16 rounded-full md:w-24"
+          style={{
+            background: `linear-gradient(to right, ${era.gradientFrom}, ${era.gradientTo})`,
+          }}
+        />
+
+        <time className="text-sm font-semibold tracking-wider text-gold">
+          {era.years}
+        </time>
+
+        <h2 className="font-heading mt-1 text-2xl font-bold text-navy sm:text-3xl">
+          {era.title}
+        </h2>
+
+        <p className="mt-3 text-base font-medium leading-relaxed text-navy/70">
+          {era.summary}
+        </p>
+
+        <div
+          className={`mt-4 space-y-3 ${align === "right" ? "text-right" : "text-left"}`}
+        >
+          {era.paragraphs.map((p, i) => (
+            <p key={i} className="text-sm leading-relaxed text-navy/80 sm:text-base">
+              {p}
+            </p>
+          ))}
+        </div>
+
+        {era.quote && <QuoteBlock quote={era.quote} />}
+        {era.facts && <FactCard facts={era.facts} />}
+      </article>
+    );
+  },
+);
